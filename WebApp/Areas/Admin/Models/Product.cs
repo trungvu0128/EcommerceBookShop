@@ -14,13 +14,12 @@ namespace WebApp.Areas.Admin.Models
         [Required]
         public string Name { get; set; }
         public int UnitPrice { get; set; }
-
         public string Author { get; set; }
-        [ForeignKey("Pubisher")]
-        public string Publisher { get; set; }
-        [ForeignKey("ProductType")]
-        public string ProductType { get; set; }
-        public virtual ProductType Type { get; set; }
+        public int PublisherId { get; set; }
+        [ForeignKey("PubisherId")]
+        public int CategoryId { get; set; }
+        [ForeignKey("CategoryId")]
+        public virtual Category Type { get; set; }
         public virtual Publisher Publishing { get; set; }
     }
 }

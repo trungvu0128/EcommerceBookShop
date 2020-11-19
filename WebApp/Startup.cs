@@ -15,8 +15,8 @@ namespace WebApp
 {
     public class Startup
     {
-        private IConfiguration configuration;
-        public Startup(IConfiguration Configuration)
+        public IConfiguration Configuration { get; }
+        public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
             
@@ -28,7 +28,7 @@ namespace WebApp
         {
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
-            services.AddDbContext<DPContext>(options => options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,13 +44,20 @@ namespace WebApp
             {
                 endpoints.MapControllerRoute(
                     name: "Admin",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Bills}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "Users",
-                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=DetailBills}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Product}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "default",
+                    pattern: "{controller=Publishers}/{action=Index}/{id?}");
+
             });
 
            

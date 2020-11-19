@@ -10,7 +10,6 @@ namespace WebApp.Areas.Admin.Models
         public int Id { get; set; }
         public string DateTime { get; set; }
         public int  TotalPrice { get; set; }
-        
-
+        public List<DetailBill> DetailBillList{ get; set; }
     }
 }

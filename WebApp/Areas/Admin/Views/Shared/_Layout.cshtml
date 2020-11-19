@@ -1,19 +1,19 @@
 ﻿<!DOCTYPE html>
-
 <html>
 @await Html.PartialAsync("_HeadPartial.cshtml")
 <body>
     @await Html.PartialAsync("_NavPartial.cshtml")
     @await Html.PartialAsync("_MenuPartial.cshtml")
     <main>
-        @RenderBody()
+        <div class="container">
+            @RenderBody()
+        </div>
+     
     </main>
-    @RenderBody()
 
     @await Html.PartialAsync("_FooterPartial.cshtml")
     @RenderSection("Scripts", required: false)
     @RenderSection("css", required: false)
-
     </div>
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>

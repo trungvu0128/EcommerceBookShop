@@ -11,6 +11,7 @@ namespace WebApp.Areas.Admin.Models
         public string  Name { get; set; }
         public string Phone { get; set; }
         public string Addresss { get; set; }
+        public List<Product> Products { get; set; }
 
     }
 }
