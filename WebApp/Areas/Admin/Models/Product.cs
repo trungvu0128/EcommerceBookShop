@@ -12,14 +12,23 @@ namespace WebApp.Areas.Admin.Models
     {
         public int id { get; set; }
         [Required]
+        [Display(Name = "Tên sản phẩm")]
         public string Name { get; set; }
+        [Display(Name = "Hình sản phẩm")]
+        public string Img { get; set; }
+        [Display(Name = "Đơn Giá")]
         public int UnitPrice { get; set; }
+        [Display(Name = "Tác giả")]
         public string Author { get; set; }
+        [Display(Name = "Nhà xuất bản")]
         public int PublisherId { get; set; }
         [ForeignKey("PubisherId")]
+        [Display(Name = "Danh mục")]
         public int CategoryId { get; set; }
         [ForeignKey("CategoryId")]
-        public virtual Category Type { get; set; }
+        [Display(Name = "Mô tả")]
+        public string  Description { get; set; }
+        public virtual Category Category { get; set; }
         public virtual Publisher Publishing { get; set; }
     }
 }

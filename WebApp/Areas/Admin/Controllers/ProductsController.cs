@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -23,7 +25,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Products
         public async Task<IActionResult> Index()
         {
-            var dPContext = _context.Products.Include(p => p.Publishing).Include(p => p.Type);
+            var dPContext = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
             return View(await dPContext.ToListAsync());
         }
 
@@ -37,7 +39,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Publishing)
-                .Include(p => p.Type)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (product == null)
             {
@@ -50,8 +52,8 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Id");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "id");
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name");
             return View();
         }
 
@@ -60,16 +62,24 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId")] Product product)
+        public async Task<IActionResult> Create([Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product,IFormFile File)
         {
             if (ModelState.IsValid)
             {
+                
                 _context.Add(product);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await File.CopyToAsync(stream);
+                }
+                product.Img = product.id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1];
+                _context.Update(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Id", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "id", product.CategoryId);
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -86,8 +96,8 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Id", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "id", product.CategoryId);
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -96,7 +106,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product)
         {
             if (id != product.id)
             {
@@ -138,7 +148,7 @@ namespace WebApp.Areas.Admin.Controllers
 
             var product = await _context.Products
                 .Include(p => p.Publishing)
-                .Include(p => p.Type)
+                .Include(p => p.Category)
                 .FirstOrDefaultAsync(m => m.id == id);
             if (product == null)
             {

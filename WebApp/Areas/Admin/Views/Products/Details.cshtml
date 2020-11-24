@@ -30,16 +30,19 @@
             @Html.DisplayFor(model => model.Author)
         </dd>
         <dt>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.Category)
         </dt>
         <dd>
-            @Html.DisplayFor(model => model.Type.id)
+            @Html.DisplayFor(model => model.Category.Name)
         </dd>
         <dt>
             @Html.DisplayNameFor(model => model.Publishing)
         </dt>
         <dd>
             @Html.DisplayFor(model => model.Publishing.Id)
+        </dd>
+        <dd>
+            @Html.DisplayFor(model => model.Description)
         </dd>
     </dl>
 </div>

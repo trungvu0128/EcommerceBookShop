@@ -23,10 +23,13 @@
                 @Html.DisplayNameFor(model => model.Author)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Type)
+                @Html.DisplayNameFor(model => model.Category)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Publishing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img)
             </th>
             <th></th>
         </tr>
@@ -44,10 +47,13 @@
                 @Html.DisplayFor(modelItem => item.Author)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Type.id)
+                @Html.DisplayFor(modelItem => item.Category.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Publishing.Id)
+                @Html.DisplayFor(modelItem => item.Publishing.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publishing.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.id">Edit</a> |

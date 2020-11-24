@@ -57,6 +57,9 @@ namespace WebApp
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Publishers}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Users",
+                    pattern: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
 
             });
 
