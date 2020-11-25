@@ -40,7 +40,7 @@ namespace WebApp.Areas.Admin.Controllers
             var product = await _context.Products
                 .Include(p => p.Publishing)
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -66,14 +66,22 @@ namespace WebApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
-                
                 _context.Add(product);
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
                     await File.CopyToAsync(stream);
                 }
-                product.Img = product.id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1];
+                product.Img = product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1];
+                try
+                {
+                    _context.Update(product);
+                    await _context.SaveChangesAsync();
+                }catch(Exception e)
+                {
+                    _context.RemoveRange(product);
+                    throw;
+                }
                 _context.Update(product);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -82,7 +90,6 @@ namespace WebApp.Areas.Admin.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name", product.CategoryId);
             return View(product);
         }
-
         // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -108,7 +115,7 @@ namespace WebApp.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product)
         {
-            if (id != product.id)
+            if (id != product.Id)
             {
                 return NotFound();
             }
@@ -122,7 +129,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!ProductExists(product.id))
+                    if (!ProductExists(product.Id))
                     {
                         return NotFound();
                     }
@@ -149,7 +156,7 @@ namespace WebApp.Areas.Admin.Controllers
             var product = await _context.Products
                 .Include(p => p.Publishing)
                 .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.id == id);
+                .FirstOrDefaultAsync(m => m.Id == id);
             if (product == null)
             {
                 return NotFound();
@@ -171,7 +178,7 @@ namespace WebApp.Areas.Admin.Controllers
 
         private bool ProductExists(int id)
         {
-            return _context.Products.Any(e => e.id == id);
+            return _context.Products.Any(e => e.Id == id);
         }
     }
 }

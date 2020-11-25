@@ -9,7 +9,7 @@ using WebApp.Areas.Admin.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(DPContext))]
-    [Migration("20201119074005_addToDb")]
+    [Migration("20201125022002_addToDb")]
     partial class addToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -86,7 +86,7 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Product", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -96,6 +96,9 @@ namespace WebApp.Migrations
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Img")
                         .HasColumnType("nvarchar(max)");
@@ -110,7 +113,7 @@ namespace WebApp.Migrations
                     b.Property<int>("UnitPrice")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 

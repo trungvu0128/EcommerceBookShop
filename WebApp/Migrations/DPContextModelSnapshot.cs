@@ -84,7 +84,7 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Product", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -111,7 +111,7 @@ namespace WebApp.Migrations
                     b.Property<int>("UnitPrice")
                         .HasColumnType("int");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 

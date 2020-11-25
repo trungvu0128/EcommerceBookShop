@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -40,28 +41,20 @@ namespace WebApp
             }
             app.UseStaticFiles();
             app.UseRouting();
+ 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "Admin",
                     pattern: "{area:exists}/{controller=Bills}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "Users",
+                    name: "Admin",
                     pattern: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=DetailBills}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Product}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Publishers}/{action=Index}/{id?}");
-                endpoints.MapControllerRoute(
-                    name: "Users",
-                    pattern: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
-
+                    name: "Admin",
+                    pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
             });
+
 
            
         }

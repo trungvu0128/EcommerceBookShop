@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit";
-    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/Admin/_Layout.cshtml";
 }
 
 <h2>Edit</h2>
@@ -31,5 +31,5 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("Admin/_ValidationScriptsPartial");}
 }

@@ -20,6 +20,8 @@
     <Folder Include="Areas\Api\Data\" />
     <Folder Include="Areas\Api\Models\" />
     <Folder Include="Areas\Api\Views\" />
+    <Folder Include="wwwroot\FrontEnd\vendor\font-awesome\less\" />
+    <Folder Include="wwwroot\FrontEnd\vendor\font-awesome\scss\" />
     <Folder Include="wwwroot\Img\Pro\" />
   </ItemGroup>
 

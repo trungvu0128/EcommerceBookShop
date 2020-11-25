@@ -10,7 +10,7 @@ namespace WebApp.Areas.Admin.Models
 {
     public class Product
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         [Required]
         [Display(Name = "Tên sản phẩm")]
         public string Name { get; set; }
