@@ -38,7 +38,7 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -46,7 +46,7 @@ namespace WebApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });

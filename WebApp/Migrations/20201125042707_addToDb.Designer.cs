@@ -9,7 +9,7 @@ using WebApp.Areas.Admin.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(DPContext))]
-    [Migration("20201125022002_addToDb")]
+    [Migration("20201125042707_addToDb")]
     partial class addToDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -40,7 +40,7 @@ namespace WebApp.Migrations
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Category", b =>
                 {
-                    b.Property<int>("id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .UseIdentityColumn();
@@ -48,7 +48,7 @@ namespace WebApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("id");
+                    b.HasKey("Id");
 
                     b.ToTable("Categories");
                 });

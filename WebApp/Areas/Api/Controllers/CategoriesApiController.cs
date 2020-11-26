@@ -47,7 +47,7 @@ namespace WebApp.Areas.Api.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutCategory(int id, Category category)
         {
-            if (id != category.id)
+            if (id != category.Id)
             {
                 return BadRequest();
             }
@@ -81,7 +81,7 @@ namespace WebApp.Areas.Api.Controllers
             _context.Categories.Add(category);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetCategory", new { id = category.id }, category);
+            return CreatedAtAction("GetCategory", new { id = category.Id }, category);
         }
 
         // DELETE: api/CategoriesApi/5
@@ -102,7 +102,7 @@ namespace WebApp.Areas.Api.Controllers
 
         private bool CategoryExists(int id)
         {
-            return _context.Categories.Any(e => e.id == id);
+            return _context.Categories.Any(e => e.Id == id);
         }
     }
 }

@@ -53,7 +53,7 @@ namespace WebApp.Areas.Admin.Controllers
         public IActionResult Create()
         {
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             return View();
         }
 
@@ -62,11 +62,12 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product,IFormFile File)
+        public async Task<IActionResult> Create([Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product,IFormFile File)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(product);
+                _context.SaveChanges();
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
                 using (var stream = new FileStream(path, FileMode.Create))
                 {
@@ -87,7 +88,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
         // GET: Admin/Products/Edit/5
@@ -104,7 +105,7 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "Name", product.CategoryId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
@@ -113,7 +114,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product)
         {
             if (id != product.Id)
             {
@@ -140,8 +141,8 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Id", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "id", "id", product.CategoryId);
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
             return View(product);
         }
 
