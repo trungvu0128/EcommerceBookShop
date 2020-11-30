@@ -2,43 +2,49 @@
 
 @{
     ViewData["Title"] = "Index";
-    Layout = "~/Areas/Admin/Views/Shared/Admin/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
 <h2>Index</h2>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<div class="container p-0 m-0">
-    <div class="row">
-        @foreach (var item in Model)
-        {
-        <div class="card" style="width: 18rem;">
-            <img class="card-img-top" src="~/Img/Pro/@item.Img" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-            </div>
-            <ul class="list-group list-group-flush">
-                <li class="list-group-item">Cras justo odio</li>
-                <li class="list-group-item">Dapibus ac facilisis in</li>
-                <li class="list-group-item">Vestibulum at eros</li>
-            </ul>
-            <div class="card-body">
-                <a href="#" class="card-link">Card link</a>
-                <a href="#" class="card-link">Another link</a>
-            </div>
-        </div>  
-        }
-</div>
-    </div>
-<style>
-   .card{
-       width:18rem;
-       height:18rem;
-   }
-   .product{
-       padding-bottom:50px;
-   }
-</style>
+    <p>
+        <a asp-action="Create" class="btn btn-outline-secondary">Create New</a>
+    </p>
+    <form class="navbar-form" method="post">
+        <div class="input-group no-border">
+            <input type="text"name="queryString"value="queryString" class="form-control" placeholder="Search...">
+            <button type="submit" class="btn btn-white btn-round btn-just-icon">
+                <i class="material-icons">search</i>
+                <div class="ripple-container"></div>
+            </button>
+        </div>
+    </form>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col"> @Html.DisplayNameFor(model => model.Name)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.UnitPrice)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Img)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Publishing)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Author)</th>
+                <th scope="col">@Html.DisplayNameFor(model => model.Category)</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+                <th scope="col">Detail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.UnitPrice</td>
+                    <td><img src="~/Img/Pro/@item.Img" style="width:50px"/></td>
+                    <td>@item.Publishing.Name</td>
+                    <td>@item.Author</td>
+                    <td>@item.Category.Name</td>
+                    <td><a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-primary">Edit</a></td>
+                    <td><a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a></td>
+                    <td><a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-info">Detail</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>

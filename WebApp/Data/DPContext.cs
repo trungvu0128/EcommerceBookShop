@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebApp.Areas.Admin.Models;
+using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Data
 {
@@ -18,5 +19,13 @@ namespace WebApp.Areas.Admin.Data
         public DbSet<Publisher> Publishers { get; set; }
         public DbSet<Bill> Bills { get; set; }
         public DbSet<DetailBill> detailBills { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Carrier> Carriers { get; set; }
+        public DbSet<ImportProduct> ImportProducts { get; set; }
+        public DbSet<ExportProduct> ExportProducts { get; set; }
+        public DbSet<Account> Users { get; set; }
+        public DbSet<Customer> Customers { get; set; }
+        public DbSet<WebApp.Models.Slide> Slide { get; set; }
+
     }
 }

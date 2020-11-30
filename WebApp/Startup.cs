@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Components.Routing;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -41,22 +42,34 @@ namespace WebApp
             }
             app.UseStaticFiles();
             app.UseRouting();
+            app.UseAuthentication();
+            app.UseAuthorization();
  
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "Admin",
                     pattern: "{area:exists}/{controller=Bills}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
+                 name: "Admin",
+                pattern: "{area:exists}/{controller=Slides}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "Admin",
+                    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}");
+                endpoints.MapControllerRoute(
+                name: "Admin",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
                     name: "Admin",
                     pattern: "{area:exists}/{controller=Categories}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
-                    name: "Admin",
-                    pattern: "{area:exists}/{controller=Product}/{action=Index}/{id?}");
+                   name: "Admin",
+                   pattern: "{area:exists}/{controller=Users}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "User",
+                    pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
             });
-
-
-           
         }
     }
 }

@@ -2,7 +2,7 @@
 
 @{
     ViewData["Title"] = "Create";
-    Layout = "~/Areas/Admin/Views/Shared/Admin/_Layout.cshtml";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Create</h2>
@@ -30,7 +30,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("Admin/_ValidationScriptsPartial");}
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
         $('button[name = postdata]').click(function() {
             confirm("hello");

@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<html>
+    <head>
+        @await Html.PartialAsync("_HeadPartial.cshtml"); 
+    </head>
+    <body>
+        @await Html.PartialAsync("_HeaderPartial.cshtml");
+        <div id="all">
+            <div id="content">
+                <div class="container">
+                    @RenderBody();
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("_FooterPartial.cshtml");
+    </body>
+        @await Html.PartialAsync("_EndPartial.cshtml");
+</html>
