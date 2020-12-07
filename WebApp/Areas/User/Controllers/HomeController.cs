@@ -21,6 +21,7 @@ namespace WebApp.Areas.User.Controllers
         {
             ViewModel model = new ViewModel();
             model.Slides = _context.Slide;
+            model.Products = _context.Products;
             return View(model);
         }
     }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Admin.Data;
 using WebApp.Areas.Admin.Models;
+using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Controllers
 {
@@ -22,16 +23,17 @@ namespace WebApp.Areas.Admin.Controllers
             _context = context;
         }
         // GET: Admin/Products
-        public async Task<IActionResult> Index(string queryStrings = null)
+        public async Task<IActionResult> Index(string queryStrings = null )
         {
             //var dPContext = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
             //return View(await dPContext.ToListAsync());
-            var queryResult = _context.Products;
-            if(queryStrings != null)
+            var queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category).ToList();
+            if (queryStrings != null)
             {
-
+                queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings)).ToList();
             }
-            return View(_context.Products.Include(p=>p.Publishing).Include(p=>p.Category).ToList());
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
+            return View(queryResult);
         }
 
         // GET: Admin/Products/Details/5
@@ -57,8 +59,13 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
+            LevelProduct level0 = new LevelProduct(0, "Thường");
+            LevelProduct level1 = new LevelProduct(1, "Khuyến Mãi");
+            LevelProduct level2 = new LevelProduct(2, "Hot");
+            List<LevelProduct> ListLevel = new List<LevelProduct>() {level0,level1,level2};
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");
             return View();
         }   
         // POST: Admin/Products/Create
@@ -66,10 +73,14 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product,IFormFile File)
+        public async Task<IActionResult> Create([Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description,Level")] Product product,IFormFile File)
         {
             if (ModelState.IsValid)
             {
+                if(File == null)
+                {
+                    return RedirectToAction(nameof(Create));
+                }
                 _context.Add(product);
                 _context.SaveChanges();
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
@@ -83,16 +94,21 @@ namespace WebApp.Areas.Admin.Controllers
                 {
                     _context.Update(product);
                     await _context.SaveChangesAsync();
-                }catch(Exception e)
+                }
+                catch (Exception e)
                 {
                     _context.RemoveRange(product);
                     throw;
                 }
-                return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
-            return View(product);
+            LevelProduct level0 = new LevelProduct(0, "Thường");
+            LevelProduct level1 = new LevelProduct(1, "Khuyến Mãi");
+            LevelProduct level2 = new LevelProduct(2, "Hot");
+            List<LevelProduct> ListLevel = new List<LevelProduct>() { level0, level1, level2 };
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");    
+            return RedirectToAction(nameof(Index));
         }
         // GET: Admin/Products/Edit/5
         public async Task<IActionResult> Edit(int? id)

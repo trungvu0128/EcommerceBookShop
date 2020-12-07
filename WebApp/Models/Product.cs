@@ -28,6 +28,7 @@ namespace WebApp.Areas.Admin.Models
         [ForeignKey("CategoryId")]
         [Display(Name = "Mô tả")]
         public string  Description { get; set; }
+        public int Level { get; set; }
         public virtual Category Category { get; set; }
         public virtual Publisher Publishing { get; set; }
     }

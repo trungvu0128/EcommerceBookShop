@@ -61,6 +61,10 @@ namespace WebApp.Areas.Admin.Controllers
         {
             if (ModelState.IsValid)
             {
+                if (File == null)
+                {
+                    return RedirectToAction(nameof(Create));
+                }
                 _context.Add(slide);
                 _context.SaveChanges();
                 var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", slide.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
