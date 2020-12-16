@@ -4,84 +4,65 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
+
 <h2>Index</h2>
+
 <p>
-    <a asp-action="Create" class="btn btn-outline-secondary">Create New</a>
+    <a asp-action="Create">Create New</a>
 </p>
-<form class="navbar-form" method="post">
-    <div class="row">
-        <div class="input-group">
-            <div class="col-sm-2">
-                <label class="form-control">Tên sản phẩm</label>
-            </div>
-            <div class="col-sm-4">
-                <input type="text" name="queryName" class="form-control" placeholder="Search...">
-            </div>
-            <div class="col-sm-2">
-                <label class="form-control m-0">Loại sản phẩm</label>
-            </div>
-            <div class="col-sm-3">
-                <select class="form-control" asp-items="ViewBag.PublisherId" name="queryPublisher"></select>
-            </div>
-            <div class="col-sm-1">
-                <button type="submit" class="btn btn-white btn-round btn-just-icon">
-                    <i class="material-icons">search</i>
-                    <div class="ripple-container"></div>
-                </button>
-            </div>
-        </div>
-    </div>
-</form>
-<table class="table table-hover display table-data">
+<table class="table">
     <thead>
         <tr>
-            <th scope="col"> @Html.DisplayNameFor(model => model.Name)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.UnitPrice)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Img)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Publishing)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Author)</th>
-            <th scope="col">@Html.DisplayNameFor(model => model.Category)</th>
-            <th scope="col">Edit</th>
-            <th scope="col">Delete</th>
-            <th scope="col">Detail</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.UnitPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Img)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Author)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Publishing)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
-        @section Scripts {
-            @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        <script>
-                $(() => {
-                    var table = $(".table-data");
-                    var link = "/Img/Pro/";
-                    $.ajax({
-                        url: 'https://localhost:44343/api/products',
-                        method: "GET",
-                        xhrFields: {
-                            withCredentials: true
-                        },
-                        success: function (data) {
-                            table.empty();
-                            $.each(data, function (a, b) {
+        @foreach (var item in Model)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Img)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Author)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Publishing)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
 
-                                table.append("<tr><td>" + b.name + "</td>" +
-                                    "<td>" + "<img src= "+ link + b.img +">"+ "</td>" +
-                                    "<td>" + b.unitPrice + "</td>" +
-                                    "<td>" + b.author + "</td>" +
-                                    "</tr>");
-                            });
-
-                            $(".display").DataTable();
-                        }
-                    });
-                });
-        </script>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>
-<style>
-    img{
-        width:100px;
-    }
-</style>
-
-

@@ -12,5 +12,6 @@ namespace WebApp.Models
         public IEnumerable<Product> Products { get; set; }
         public IEnumerable<Slide> Slides { get; set; }
         public IEnumerable<DetailBill> detailBills{ get; set; }
+        public Product product { get; set; }
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebApp.Areas.Admin.Data;
-using WebApp.Data;
+using WebApp.Models;
 
 namespace WebApp
 {
@@ -32,7 +32,8 @@ namespace WebApp
             services.AddControllersWithViews();
             services.AddRazorPages().AddRazorRuntimeCompilation();
             services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            
+            services.AddIdentity<CustomUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).
+               AddEntityFrameworkStores<DPContext>().AddDefaultUI().AddDefaultTokenProviders();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,7 +59,7 @@ namespace WebApp
                 pattern: "{area:exists}/{controller=Slides}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "Admin",
-                    pattern: "{area:exists}/{controller=Auth}/{action=Login}/{id?}");
+                    pattern: "{area:exists}/{controller=User}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                 name: "Admin",
                 pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");

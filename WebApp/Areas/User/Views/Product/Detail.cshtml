@@ -1,0 +1,206 @@
+﻿@model WebApp.Models.ViewModel
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/User/Views/Shared/_Layout.cshtml";
+}
+<div class="row">
+    @await Html.PartialAsync("MenuCategory.cshtml")
+    <div class="col-lg-9 order-1 order-lg-2">
+        <div id="productMain" class="row">
+            <div class="col-md-6">
+                <div data-slider-id="1" class="owl-carousel shop-detail-carousel owl-loaded owl-drag">
+                    <div class="owl-stage-outer">
+                        <div class="owl-stage" style="transform: translate3d(-795px, 0px, 0px); transition: all 0.25s ease 0s; width: 2783px;">
+                            <div class="owl-item cloned" style="width: 397.5px;">
+                                <div class="item">
+                                    <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                </div>
+                            </div><div class="owl-item cloned" style="width: 397.5px;">
+                                <div class="item"> <img src="/Img/Pro/@Model.product.Img"alt="" class="img-fluid img-main"></div>
+                            </div>
+                            <div class="owl-item active" style="width: 397.5px;">
+                                <div class="item">
+                                    <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                </div>
+
+                            </div>
+                            <div class="owl-item" style="width: 397.5px;">
+                                <div class="item">
+                                    <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                </div>
+                            </div>
+                            <div class="owl-item" style="width: 397.5px;"><div class="item"> <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                   </div></div><div class="owl-item cloned" style="width: 397.5px;"><div class="item"> <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                            </div>
+                                        </div><div class="owl-item cloned" style="width: 397.5px;"><div class="item"> <img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid img-main">
+                                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="owl-nav disabled">
+                    <button type="button" role="presentation" class="owl-prev">
+                        <span aria-label="Previous">
+                        ‹</span>
+                          </button>
+                    <button type="button" role="presentation" class="owl-next">
+                        <span aria-label="Next">›
+                            </span></button>
+                        </div>
+                    <div class="owl-dots disabled">
+
+                    </div>
+                </div>
+                <div class="ribbon sale">
+                    <div class="theribbon">SALE</div>
+                    <div class="ribbon-background"></div>
+                </div>
+                <!-- /.ribbon-->
+                <div class="ribbon new">
+                    <div class="theribbon">NEW</div>
+                    <div class="ribbon-background"></div>
+                </div>
+                <!-- /.ribbon-->
+            </div>
+            <div class="col-md-6">
+                <div class="box">
+                    <h1 class="text-center">@Model.product.Name</h1>
+      
+                    <p class="price">@Model.product.UnitPrice VND</p>
+                    <p class="text-center buttons"><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i> Add to cart</a><a href="basket.html" class="btn btn-outline-primary"><i class="fa fa-heart"></i> Add to wishlist</a></p>
+                </div>
+                <div data-slider-id="1" class="owl-thumbs">
+                    <button class="owl-thumb-item active"><img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid"></button>
+                    <button class="owl-thumb-item"><img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid"></button>
+                    <button class="owl-thumb-item"><img src="/Img/Pro/@Model.product.Img" alt="" class="img-fluid"></button>
+                </div>
+            </div>
+        </div>
+        <div id="details" class="box">
+            <p></p>
+            <h2>Thông tin sản phẩm</h2>
+            <h4>Tên nhà xuất bản : @Model.product.Publishing.Name</h4>
+            <h4>Tác giả: @Model.product.Author </h4>
+            <h4>Loại sách: @Model.product.Category.Name</h4>
+            <h4>Mô tả</h4>
+
+            <blockquote>
+                <p><em>@Model.product.Description</em></p>
+            </blockquote>
+            <hr>
+            <div class="social">
+                <h4>Show it to your friends</h4>
+                <p><a href="#" class="external facebook"><i class="fa fa-facebook"></i></a><a href="#" class="external gplus"><i class="fa fa-google-plus"></i></a><a href="#" class="external twitter"><i class="fa fa-twitter"></i></a><a href="#" class="email"><i class="fa fa-envelope"></i></a></p>
+            </div>
+        </div>
+        <div class="row same-height-row">
+            <div class="col-md-3 col-sm-6">
+                <div class="box same-height" style="height: 347.328px;">
+                    <h3>You may also like these products</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product2.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product2_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product2.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product1.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product1_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product1.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product3.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product3_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product3.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+        </div>
+        <div class="row same-height-row">
+            <div class="col-md-3 col-sm-6">
+                <div class="box same-height" style="height: 347.328px;">
+                    <h3>Products viewed recently</h3>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product2.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product2_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product2.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product1.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product1_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product1.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+            <div class="col-md-3 col-sm-6">
+                <div class="product same-height" style="height: 347.328px;">
+                    <div class="flip-container">
+                        <div class="flipper">
+                            <div class="front"><a href="detail.html"><img src="img/product3.jpg" alt="" class="img-fluid"></a></div>
+                            <div class="back"><a href="detail.html"><img src="img/product3_2.jpg" alt="" class="img-fluid"></a></div>
+                        </div>
+                    </div><a href="detail.html" class="invisible"><img src="img/product3.jpg" alt="" class="img-fluid"></a>
+                    <div class="text">
+                        <h3>Fur coat</h3>
+                        <p class="price">$143</p>
+                    </div>
+                </div>
+                <!-- /.product-->
+            </div>
+        </div>
+    </div>
+
+</div>
+<style>
+    .img-main{
+        height:25rem;
+    }
+</style>

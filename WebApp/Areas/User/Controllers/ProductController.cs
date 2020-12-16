@@ -18,16 +18,33 @@ namespace WebApp.Areas.Admin.Controllers.FrontEnd
         {
             _context = context;
         }
-        public IActionResult Index(string queryCategory)
+        
+        public IActionResult Index(int? id)
         {
             ViewModel model = new ViewModel();
-            if(queryCategory != null)
+            if (id == null)
             {
-                model.Products = _context.Products.Where(p => p.Category.ToString() == queryCategory).ToList();
+                model.Products = _context.Products.ToList();
                 model.Categories = _context.Categories.ToList();
-
+                return View(model);
             }
-         
+            model.Products = _context.Products.Where(p=>p.CategoryId == id).ToList();
+            model.Categories = _context.Categories.ToList();
+            return View(model);
+        }
+        public IActionResult Detail(int? id)
+        {
+            if(id == null)
+            {
+                return NotFound();
+            }
+            ViewModel model = new ViewModel();
+            model.product = _context.Products.Include(p=>p.Publishing).Include(p=>p.Category).FirstOrDefault(p => p.Id == id);
+            model.Categories = _context.Categories.ToList();
+            if(model == null)
+            {
+                return NotFound();
+            }
             return View(model);
         }
         

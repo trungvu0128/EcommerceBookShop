@@ -25,7 +25,7 @@
                                 <p class="price">
                                     <del></del>@item.UnitPrice VND
                                 </p>
-                                <p class="buttons"><a href="detail.html" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
+                                <p class="buttons"><a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-secondary">View detail</a><a href="basket.html" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a></p>
                             </div>
                             <!-- /.text-->
                         </div>

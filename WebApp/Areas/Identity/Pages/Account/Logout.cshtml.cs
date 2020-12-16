@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using WebApp.Areas.Identity.Data;
+using WebApp.Models;
 
 namespace WebApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LogoutModel : PageModel
     {
-        private readonly SignInManager<WebAppUser> _signInManager;
+        private readonly SignInManager<CustomUser> _signInManager;
         private readonly ILogger<LogoutModel> _logger;
 
-        public LogoutModel(SignInManager<WebAppUser> signInManager, ILogger<LogoutModel> logger)
+        public LogoutModel(SignInManager<CustomUser> signInManager, ILogger<LogoutModel> logger)
         {
             _signInManager = signInManager;
             _logger = logger;

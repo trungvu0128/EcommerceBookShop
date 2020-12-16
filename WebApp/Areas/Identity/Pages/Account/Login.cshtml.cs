@@ -11,20 +11,20 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using WebApp.Areas.Identity.Data;
+using WebApp.Models;
 
 namespace WebApp.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<WebAppUser> _userManager;
-        private readonly SignInManager<WebAppUser> _signInManager;
+        private readonly UserManager<CustomUser> _userManager;
+        private readonly SignInManager<CustomUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<WebAppUser> signInManager, 
+        public LoginModel(SignInManager<CustomUser> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<WebAppUser> userManager)
+            UserManager<CustomUser> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -44,7 +44,7 @@ namespace WebApp.Areas.Identity.Pages.Account
         public class InputModel
         {
             [Required]
-            [EmailAddress]
+            [Display(Name ="Email / UserName")]
             public string Email { get; set; }
 
             [Required]
@@ -74,7 +74,7 @@ namespace WebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            returnUrl ??= Url.Content("~/");
+            returnUrl ??= Url.Content("~/Admin/Home");
 
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
         
