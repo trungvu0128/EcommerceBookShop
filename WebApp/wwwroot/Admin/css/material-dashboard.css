@@ -70,7 +70,6 @@ hr {
   height: 0;
   overflow: visible;
 }
-
 h1,
 h2,
 h3,
@@ -224,7 +223,7 @@ caption {
 }
 
 th {
-  text-align: inherit;
+  text-align: center;
 }
 
 label {

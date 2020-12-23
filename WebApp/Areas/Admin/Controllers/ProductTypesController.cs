@@ -6,28 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Admin.Data;
-using WebApp.Areas.Admin.Models;
+using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Controllers
 {
     [Area("Admin")]
-    public class DetailBillsController : Controller
+    public class ProductTypesController : Controller
     {
         private readonly DPContext _context;
 
-        public DetailBillsController(DPContext context)
+        public ProductTypesController(DPContext context)
         {
             _context = context;
         }
 
-        // GET: Admin/DetailBills
+        // GET: Admin/ProductTypes
         public async Task<IActionResult> Index()
         {
-            var dPContext = _context.detailBills.Include(d => d.Bill).Include(d => d.Product);
-            return View(await dPContext.ToListAsync());
+            return View(await _context.ProductType.ToListAsync());
         }
 
-        // GET: Admin/DetailBills/Details/5
+        // GET: Admin/ProductTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -35,45 +34,39 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var detailBill = await _context.detailBills
-                .Include(d => d.Bill)
-                .Include(d => d.Product)
+            var productType = await _context.ProductType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (detailBill == null)
+            if (productType == null)
             {
                 return NotFound();
             }
 
-            return View(detailBill);
+            return View(productType);
         }
 
-        // GET: Admin/DetailBills/Create
+        // GET: Admin/ProductTypes/Create
         public IActionResult Create()
         {
-            ViewData["BillId"] = new SelectList(_context.Bills, "Id", "Id");
-            ViewData["ProductId"] = new SelectList(_context.Products, "id", "Name");
             return View();
         }
 
-        // POST: Admin/DetailBills/Create
+        // POST: Admin/ProductTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Quantity,Price,BillId,ProductName,ProductId")] DetailBill detailBill)
+        public async Task<IActionResult> Create([Bind("Id,Name")] ProductType productType)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(detailBill);
+                _context.Add(productType);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BillId"] = new SelectList(_context.Bills, "Id", "Id", detailBill.BillId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "id", "Name", detailBill.ProductId);
-            return View(detailBill);
+            return View(productType);
         }
 
-        // GET: Admin/DetailBills/Edit/5
+        // GET: Admin/ProductTypes/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,24 +74,22 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var detailBill = await _context.detailBills.FindAsync(id);
-            if (detailBill == null)
+            var productType = await _context.ProductType.FindAsync(id);
+            if (productType == null)
             {
                 return NotFound();
             }
-            ViewData["BillId"] = new SelectList(_context.Bills, "Id", "Id", detailBill.BillId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "id", "Name", detailBill.ProductId);
-            return View(detailBill);
+            return View(productType);
         }
 
-        // POST: Admin/DetailBills/Edit/5
+        // POST: Admin/ProductTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Quantity,Price,BillId,ProductName,ProductId")] DetailBill detailBill)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] ProductType productType)
         {
-            if (id != detailBill.Id)
+            if (id != productType.Id)
             {
                 return NotFound();
             }
@@ -107,12 +98,12 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 try
                 {
-                    _context.Update(detailBill);
+                    _context.Update(productType);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DetailBillExists(detailBill.Id))
+                    if (!ProductTypeExists(productType.Id))
                     {
                         return NotFound();
                     }
@@ -123,12 +114,10 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["BillId"] = new SelectList(_context.Bills, "Id", "Id", detailBill.BillId);
-            ViewData["ProductId"] = new SelectList(_context.Products, "id", "Name", detailBill.ProductId);
-            return View(detailBill);
+            return View(productType);
         }
 
-        // GET: Admin/DetailBills/Delete/5
+        // GET: Admin/ProductTypes/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -136,32 +125,30 @@ namespace WebApp.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            var detailBill = await _context.detailBills
-                .Include(d => d.Bill)
-                .Include(d => d.Product)
+            var productType = await _context.ProductType
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (detailBill == null)
+            if (productType == null)
             {
                 return NotFound();
             }
 
-            return View(detailBill);
+            return View(productType);
         }
 
-        // POST: Admin/DetailBills/Delete/5
+        // POST: Admin/ProductTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var detailBill = await _context.detailBills.FindAsync(id);
-            _context.detailBills.Remove(detailBill);
+            var productType = await _context.ProductType.FindAsync(id);
+            _context.ProductType.Remove(productType);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DetailBillExists(int id)
+        private bool ProductTypeExists(int id)
         {
-            return _context.detailBills.Any(e => e.Id == id);
+            return _context.ProductType.Any(e => e.Id == id);
         }
     }
 }

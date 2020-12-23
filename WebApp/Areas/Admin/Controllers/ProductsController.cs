@@ -3,16 +3,19 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using PagedList;
 using WebApp.Areas.Admin.Data;
 using WebApp.Areas.Admin.Models;
 using WebApp.Models;
 
 namespace WebApp.Areas.Admin.Controllers
 {
+    [AllowAnonymous]
     [Area("Admin")]
     public class ProductsController : Controller
     {
@@ -22,15 +25,30 @@ namespace WebApp.Areas.Admin.Controllers
         {
             _context = context;
         }
+        public void _construct()
+        {
+            LevelProduct level0 = new LevelProduct(0, "Thường");
+            LevelProduct level1 = new LevelProduct(1, "Khuyến Mãi");
+            LevelProduct level2 = new LevelProduct(2, "Hot");
+            List<LevelProduct> ListLevel = new List<LevelProduct>() { level0, level1, level2 };
+            Origin or1 = new Origin(1, "Trong nước");
+            Origin or2 = new Origin(2, "Nước ngoài");
+            List<Origin> ListOrigin = new List<Origin>() { or1, or2 };
+            ViewData["Origin"] = new SelectList(ListOrigin, "Id", "Name");
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name");
+            ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");
+        }
         // GET: Admin/Products
-        public async Task<IActionResult> Index(string queryStrings = null )
+        public async Task<IActionResult> Index(string queryStrings = null)
         {
             //var dPContext = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
             //return View(await dPContext.ToListAsync());
-            var queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category).ToList();
+            var queryResult = await _context.Products.Include(p => p.Publishing).Include(p => p.Category).ToListAsync();
             if (queryStrings != null)
             {
-                queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings)).ToList();
+                queryResult = await _context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings)).ToListAsync();
             }
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
             return View(queryResult);
@@ -59,37 +77,38 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Products/Create
         public IActionResult Create()
         {
-            LevelProduct level0 = new LevelProduct(0, "Thường");
-            LevelProduct level1 = new LevelProduct(1, "Khuyến Mãi");
-            LevelProduct level2 = new LevelProduct(2, "Hot");
-            List<LevelProduct> ListLevel = new List<LevelProduct>() {level0,level1,level2};
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");
+            _construct();
             return View();
-        }   
+        }
         // POST: Admin/Products/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description,Level")] Product product,IFormFile File)
+        public async Task<IActionResult> Create([Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,ProductTypeId,Img,Description,Level,Origin")] Product product, ICollection<IFormFile> Files)
         {
             if (ModelState.IsValid)
             {
-                if(File == null)
+                if (Files == null)
                 {
                     return RedirectToAction(nameof(Create));
                 }
                 _context.Add(product);
                 _context.SaveChanges();
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1]);
-
-                using (var stream = new FileStream(path, FileMode.Create))
+                long size = Files.Sum(f => f.Length);
+                foreach (var formFile in Files)
                 {
-                    await File.CopyToAsync(stream);
+                    if (formFile.Length > 0)
+                    {
+                        var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro",product.Id + formFile.FileName);
+
+                        using (var stream = new FileStream(filePath, FileMode.Create))
+                        {
+                            await formFile.CopyToAsync(stream);
+                        }
+                    }
+                    product.Img += product.Id + formFile.FileName + ",";
                 }
-                product.Img = product.Id + "." + File.FileName.Split(".")[File.FileName.Split(".").Length - 1];
                 try
                 {
                     _context.Update(product);
@@ -101,13 +120,7 @@ namespace WebApp.Areas.Admin.Controllers
                     throw;
                 }
             }
-            LevelProduct level0 = new LevelProduct(0, "Thường");
-            LevelProduct level1 = new LevelProduct(1, "Khuyến Mãi");
-            LevelProduct level2 = new LevelProduct(2, "Hot");
-            List<LevelProduct> ListLevel = new List<LevelProduct>() { level0, level1, level2 };
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
-            ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");    
+            _construct();
             return RedirectToAction(nameof(Index));
         }
         // GET: Admin/Products/Edit/5
@@ -123,8 +136,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            _construct();
             return View(product);
         }
 
@@ -133,7 +145,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,Img,Description")] Product product)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,ProductTypeId,Description,Img,Origin")] Product product,ICollection<IFormFile> Files)
         {
             if (id != product.Id)
             {
@@ -144,6 +156,20 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 try
                 {
+                    long size = Files.Sum(f => f.Length);
+                    foreach (var formFile in Files)
+                    {
+                        if (formFile.Length > 0)
+                        {
+                            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/Img/Pro", product.Id + formFile.FileName);
+
+                            using (var stream = new FileStream(filePath, FileMode.Create))
+                            {
+                                await formFile.CopyToAsync(stream);
+                            }
+                        }
+                        product.Img += product.Id + formFile.FileName + ",";
+                    }
                     _context.Update(product);
                     await _context.SaveChangesAsync();
                 }
@@ -160,8 +186,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name", product.PublisherId);
-            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name", product.CategoryId);
+            _construct();
             return View(product);
         }
 

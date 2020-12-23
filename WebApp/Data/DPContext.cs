@@ -12,6 +12,7 @@ namespace WebApp.Areas.Admin.Data
 {
     public class DPContext : IdentityDbContext<CustomUser>
     {
+            
         public DPContext(DbContextOptions<DPContext> options) : base(options)
         {
 
@@ -28,6 +29,8 @@ namespace WebApp.Areas.Admin.Data
         public DbSet<CustomUser> CustomUsers { get; set; }
         public DbSet<Customer> Customers { get; set; }
         public DbSet<WebApp.Models.Slide> Slide { get; set; }
+        public DbSet<Cart> Cart { get; set; }
+        public DbSet<ProductType> ProductType { get; set; }
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
@@ -60,6 +63,7 @@ namespace WebApp.Areas.Admin.Data
             {
                 entity.ToTable("UserTokens");
             });
+            builder.Entity<Cart>().HasNoKey();
         }
     }
 }

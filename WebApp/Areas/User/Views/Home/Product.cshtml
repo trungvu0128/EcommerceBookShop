@@ -1,4 +1,7 @@
 ﻿@model WebApp.Models.ViewModel
+@{ 
+    string[] Items = null;
+}
 <div id="hot">
     <div class="box py-4">
         <div class="container">
@@ -16,38 +19,44 @@
                 <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2480px;">
                     @foreach (var item in Model.Products)
                     {
-
-                        <div class="owl-item active" style="width: 310px;">
-                            <div class="item">
-                                <div class="product">
-                                    <div class="flip-container">
-                                        <div class="flipper">
-                                            <div class="front"><a href="detail.html"><img src="~/Img/Pro/@item.Img" alt="" class="img-fluid image"></a></div>
-                                            <div class="back"><a href="detail.html"><img src="~/Img/Pro/@item.Img" alt="" class="img-fluid image"></a></div>
+                        if (item.Img != null)
+                        {
+                            Items = item.Img.Split(",");
+                            <div class="owl-item" style="width: 310px;">
+                                <div class="item">
+                                    <div class="product">
+                                        <div class="flip-container">
+                                            <div class="flipper">
+                                                <div class="front"><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id"><img src="~/Img/Pro/@Items[0]" alt="" class="img-fluid image"></a></div>
+                                                <div class="back"><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id"><img src="~/Img/Pro/@Items[1]" alt="" class="img-fluid image"></a></div>
+                                            </div>
+                                        </div><a href="detail.html" class="invisible"><img src="~/Img/Pro/@Items[0]" alt="" class="img-fluid image"></a>
+                                        <div class="text">
+                                            <h3><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">@item.Name</a></h3>
+                                            <p class="price">
+                                                <del></del>Gia: @item.UnitPrice VND
+                                            </p>
                                         </div>
-                                    </div><a href="detail.html" class="invisible"><img src="~/Img/Pro/@item.Img" alt="" class="img-fluid image"></a>
-                                    <div class="text">
-                                        <h3><a href="detail.html">@item.Name</a></h3>
-                                        <p class="price">
-                                            <del></del>Gia: @item.UnitPrice VND
-                                        </p>
+                                        @if (item.Level == 1)
+                                        {
+                                            <div class="ribbon sale">
+                                                <div class="theribbon">SALE</div>
+                                                <div class="ribbon-background"></div>
+                                            </div>
+                                            <!-- /.ribbon-->
+                                            <div class="ribbon new">
+                                                <div class="theribbon">HOT</div>
+                                                <div class="ribbon-background"></div>
+                                            </div>
+                                        }
+                                        <!-- /.text-->
+                                        <!-- /.ribbon-->
+                                        <!-- /.ribbon-->
                                     </div>
-                                    <!-- /.text-->
-                                    <div class="ribbon sale">
-                                        <div class="theribbon">SALE</div>
-                                        <div class="ribbon-background"></div>
-                                    </div>
-                                    <!-- /.ribbon-->
-                                    <div class="ribbon new">
-                                        <div class="theribbon">HOT</div>
-                                        <div class="ribbon-background"></div>
-                                    </div>
-                                    <!-- /.ribbon-->
-                                    <!-- /.ribbon-->
+                                    <!-- /.product-->
                                 </div>
-                                <!-- /.product-->
-                            </div>
-                        </div>
+                            </div>  
+                        }
 
                     }
                 </div>
@@ -64,6 +73,7 @@
     </div>
 <style>
     .image{
-        height:300px;
+        height:250px;
     }
 </style>
+</div>

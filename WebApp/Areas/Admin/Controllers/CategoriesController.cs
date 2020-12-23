@@ -19,11 +19,15 @@ namespace WebApp.Areas.Admin.Controllers
         {
             _context = context;
         }
-
+        public void _construct()
+        {
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name");
+        }
         // GET: Admin/Categories
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Categories.ToListAsync());
+            var dPContext = _context.Categories.Include(c => c.ProductType);
+            return View(await dPContext.ToListAsync());
         }
 
         // GET: Admin/Categories/Details/5
@@ -35,6 +39,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.ProductType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {
@@ -47,6 +52,7 @@ namespace WebApp.Areas.Admin.Controllers
         // GET: Admin/Categories/Create
         public IActionResult Create()
         {
+            ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name");
             return View();
         }
 
@@ -55,7 +61,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Create([Bind("Id,Name,ProductTypeId")] Category category)
         {
             if (ModelState.IsValid)
             {
@@ -63,6 +69,7 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            _construct();
             return View(category);
         }
 
@@ -79,6 +86,7 @@ namespace WebApp.Areas.Admin.Controllers
             {
                 return NotFound();
             }
+            _construct();
             return View(category);
         }
 
@@ -87,7 +95,7 @@ namespace WebApp.Areas.Admin.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] Category category)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,ProductTypeId")] Category category)
         {
             if (id != category.Id)
             {
@@ -114,6 +122,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            _construct();
             return View(category);
         }
 
@@ -126,6 +135,7 @@ namespace WebApp.Areas.Admin.Controllers
             }
 
             var category = await _context.Categories
+                .Include(c => c.ProductType)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (category == null)
             {

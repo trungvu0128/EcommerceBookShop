@@ -34,6 +34,18 @@ namespace WebApp
             services.AddDbContext<DPContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddIdentity<CustomUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).
                AddEntityFrameworkStores<DPContext>().AddDefaultUI().AddDefaultTokenProviders();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(5000);
+                options.Cookie.HttpOnly = true;
+                options.Cookie.IsEssential = true;
+            });
+            services.AddSession(options =>
+            {
+                options.Cookie.Name = "Cart";
+                options.IdleTimeout = new TimeSpan(0, 30, 0);
+                
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -47,6 +59,7 @@ namespace WebApp
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseSession();
  
             app.UseEndpoints(endpoints =>
             {
@@ -72,6 +85,12 @@ namespace WebApp
                 endpoints.MapControllerRoute(
                     name: "User",
                     pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "User",
+                    pattern: "{area:exists}/{controller=ProductTypes}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                name: "User",
+                pattern: "{area:exists}/{controller=Cart}/{action=Index}/{id?}");
             });
         }
     }

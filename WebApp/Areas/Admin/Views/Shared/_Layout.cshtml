@@ -13,6 +13,11 @@ The above copyright notice and this permission notice shall be included in all c
 <html lang="en">
 @await Html.PartialAsync("_HeadPartial.cshtml")
 <body class="">
+    <style>
+        th{
+            text-align:center;
+        }
+    </style>
     <div class="wrapper ">
         <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
             <!--
@@ -41,7 +46,7 @@ The above copyright notice and this permission notice shall be included in all c
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index">
-                            <i class="material-icons">person</i>
+                            <i class="material-icons">person_pin</i>
                             <p>Quản Lý Thông Tin Cá Nhân</p>
                         </a>
                     </li>
@@ -76,15 +81,15 @@ The above copyright notice and this permission notice shall be included in all c
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="./notifications.html">
-                            <i class="material-icons">notifications</i>
-                            <p>Notifications</p>
+                        <a class="nav-link" asp-area="Admin" asp-controller="Bills" asp-action="Index">
+                            <i class="material-icons">assignment</i>
+                            <p>Quản lý đơn hàng</p>
                         </a>
                     </li>
                     <li class="nav-item ">
-                        <a class="nav-link" href="./rtl.html">
-                            <i class="material-icons">language</i>
-                            <p>RTL Support</p>
+                        <a class="nav-link" asp-area="Admin" asp-controller="ProductTypes" asp-action="Index">
+                            <i class="material-icons">sticky_note_2</i>
+                            <p>Quản lý Loại sản phẩm </p>
                         </a>
                     </li>
                 </ul>
@@ -95,9 +100,7 @@ The above copyright notice and this permission notice shall be included in all c
             @await Html.PartialAsync("_NavPartial.cshtml")
             <!-- End Navbar -->
             <div class="content">
-                <div class="container">
                     @RenderBody()
-                </div>
             </div>
             <!--Footer-->
             @await Html.PartialAsync("_FooterPartial.cshtml")

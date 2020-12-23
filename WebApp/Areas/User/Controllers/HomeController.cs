@@ -20,8 +20,8 @@ namespace WebApp.Areas.User.Controllers
         public IActionResult Index()
         {
             ViewModel model = new ViewModel();
-            model.Slides = _context.Slide;
-            model.Products = _context.Products;
+            model.Slides =  _context.Slide.ToList();
+            model.Products =  _context.Products.ToList();
             return View(model);
         }
     }

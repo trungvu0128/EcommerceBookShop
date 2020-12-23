@@ -17,6 +17,6 @@ namespace WebApp.Areas.Admin.Models
         public int ProductId { get; set; }
         [ForeignKey("ProductId")]
         public virtual Product Product { get; set; }
-        public virtual Bill Bill { get; set; }
+
     }
 }

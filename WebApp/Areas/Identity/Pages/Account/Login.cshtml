@@ -41,11 +41,11 @@
                     <img src="~/Auth/images/img-01.png" alt="IMG">
                 </div>        <section>
                                   <form id="account" method="post">
-                                    <h3 style="text-align:center">ADMINISTRATOR</h3>
+                                      <h3 style="text-align:center">ADMINISTRATOR</h3>
                                       <div asp-validation-summary="All" class="text-danger"></div>
                                       <div class="form-group">
                                           <label asp-for="Input.Email"></label>
-                                          <input asp-for="Input.Email" class="input100"/>
+                                          <input asp-for="Input.Email" class="input100" />
                                           <span class="symbol-input100">
                                               <i class="fa fa-envelope" aria-hidden="true"></i>
                                           </span>
@@ -73,7 +73,13 @@
                                           <p>
                                               <a id="forgot-password" asp-page="./ForgotPassword">Forgot your password?</a>
                                           </p>
-                                         
+
+                                      </div>
+                                      <div class="form-group">
+                                          <p>
+                                              <a id="Register" asp-page="./Register">Create a new account </a>
+                                          </p>
+
                                       </div>
                                   </form>
                 </section>

@@ -19,28 +19,28 @@ namespace WebApp.Areas.Admin.Controllers.FrontEnd
             _context = context;
         }
         
-        public IActionResult Index(int? id)
+        public async Task <IActionResult> Index(int? id)
         {
             ViewModel model = new ViewModel();
             if (id == null)
             {
-                model.Products = _context.Products.ToList();
-                model.Categories = _context.Categories.ToList();
+                model.Products = await _context.Products.ToListAsync();
+                model.Categories =await _context.Categories.ToListAsync();
                 return View(model);
             }
-            model.Products = _context.Products.Where(p=>p.CategoryId == id).ToList();
-            model.Categories = _context.Categories.ToList();
+            model.Products = await _context.Products.Where(p=>p.CategoryId == id).ToListAsync();
+            model.Categories = await _context.Categories.ToListAsync();
             return View(model);
         }
-        public IActionResult Detail(int? id)
+        public async Task<IActionResult> Detail(int? id)
         {
             if(id == null)
             {
                 return NotFound();
             }
             ViewModel model = new ViewModel();
-            model.product = _context.Products.Include(p=>p.Publishing).Include(p=>p.Category).FirstOrDefault(p => p.Id == id);
-            model.Categories = _context.Categories.ToList();
+            model.product = await _context.Products.Include(p=>p.Publishing).Include(p=>p.Category).FirstOrDefaultAsync(p => p.Id == id);
+            model.Categories = await _context.Categories.ToListAsync();
             if(model == null)
             {
                 return NotFound();
@@ -50,3 +50,4 @@ namespace WebApp.Areas.Admin.Controllers.FrontEnd
         
     }
 }
+    

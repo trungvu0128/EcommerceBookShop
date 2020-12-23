@@ -242,7 +242,12 @@ namespace WebApp.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.ToTable("Categories");
                 });
@@ -304,6 +309,12 @@ namespace WebApp.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("Origin")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductTypeId")
+                        .HasColumnType("int");
+
                     b.Property<int>("PublisherId")
                         .HasColumnType("int");
 
@@ -313,6 +324,8 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("ProductTypeId");
 
                     b.HasIndex("PublisherId");
 
@@ -353,6 +366,19 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Carriers");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Cart", b =>
+                {
+                    b.Property<int?>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Cart");
                 });
 
             modelBuilder.Entity("WebApp.Models.CustomUser", b =>
@@ -519,6 +545,21 @@ namespace WebApp.Migrations
                     b.ToTable("Payments");
                 });
 
+            modelBuilder.Entity("WebApp.Models.ProductType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ProductType");
+                });
+
             modelBuilder.Entity("WebApp.Models.Slide", b =>
                 {
                     b.Property<int>("Id")
@@ -594,9 +635,20 @@ namespace WebApp.Migrations
                     b.Navigation("Customer");
                 });
 
+            modelBuilder.Entity("WebApp.Areas.Admin.Models.Category", b =>
+                {
+                    b.HasOne("WebApp.Models.ProductType", "ProductType")
+                        .WithMany("Categories")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProductType");
+                });
+
             modelBuilder.Entity("WebApp.Areas.Admin.Models.DetailBill", b =>
                 {
-                    b.HasOne("WebApp.Areas.Admin.Models.Bill", "Bill")
+                    b.HasOne("WebApp.Areas.Admin.Models.Bill", null)
                         .WithMany("DetailBillList")
                         .HasForeignKey("BillId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -607,8 +659,6 @@ namespace WebApp.Migrations
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Bill");
 
                     b.Navigation("Product");
                 });
@@ -621,6 +671,12 @@ namespace WebApp.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("WebApp.Models.ProductType", "ProductType")
+                        .WithMany("Products")
+                        .HasForeignKey("ProductTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("WebApp.Areas.Admin.Models.Publisher", "Publishing")
                         .WithMany("Products")
                         .HasForeignKey("PublisherId")
@@ -629,7 +685,18 @@ namespace WebApp.Migrations
 
                     b.Navigation("Category");
 
+                    b.Navigation("ProductType");
+
                     b.Navigation("Publishing");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Cart", b =>
+                {
+                    b.HasOne("WebApp.Areas.Admin.Models.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("WebApp.Areas.Admin.Models.Bill", b =>
@@ -650,6 +717,13 @@ namespace WebApp.Migrations
             modelBuilder.Entity("WebApp.Models.Customer", b =>
                 {
                     b.Navigation("Bills");
+                });
+
+            modelBuilder.Entity("WebApp.Models.ProductType", b =>
+                {
+                    b.Navigation("Categories");
+
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

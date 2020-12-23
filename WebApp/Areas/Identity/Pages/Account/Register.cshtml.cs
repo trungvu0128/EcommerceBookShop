@@ -81,7 +81,7 @@ namespace WebApp.Areas.Identity.Pages.Account
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
-            {
+            {   
                 MailAddress address = new MailAddress(Input.Email);
                 string userName = address.User;
                 var user = new CustomUser
@@ -110,7 +110,7 @@ namespace WebApp.Areas.Identity.Pages.Account
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {
                         return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                    }
+                    }   
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
