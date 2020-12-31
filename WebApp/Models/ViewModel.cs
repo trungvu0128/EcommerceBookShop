@@ -14,5 +14,6 @@ namespace WebApp.Models
         public List<DetailBill> detailBills{ get; set; }
         public List <Cart> Carts { get; set; } 
         public Product product { get; set; }
+        public List<ProductType> ProductTypes { get; set; }
     }
 }

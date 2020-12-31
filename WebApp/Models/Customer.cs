@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -7,7 +8,7 @@ using WebApp.Areas.Admin.Models;
 
 namespace WebApp.Models
 {
-    public class Customer
+    public class Customer : IdentityUser
     {
         public int Id { get; set; }
         [Display(Name = "Tên khách hàng")]
@@ -18,5 +19,6 @@ namespace WebApp.Models
         public string  Phone { get; set; }
         public string  Email { get; set; }
         public List<Bill> Bills { get; set; }
+       // public string  MyProperty { get; set; }
     }
 }

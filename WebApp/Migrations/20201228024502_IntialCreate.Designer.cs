@@ -10,8 +10,8 @@ using WebApp.Areas.Admin.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(DPContext))]
-    [Migration("20201223032429_addProductTypeToCategory")]
-    partial class addProductTypeToCategory
+    [Migration("20201228024502_IntialCreate")]
+    partial class IntialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,6 +84,10 @@ namespace WebApp.Migrations
                     b.Property<string>("ConcurrencyStamp")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
@@ -123,6 +127,8 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("User");
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -212,8 +218,8 @@ namespace WebApp.Migrations
                         .HasColumnType("int")
                         .UseIdentityColumn();
 
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
+                    b.Property<string>("CustomerId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("DateTime")
                         .HasColumnType("nvarchar(max)");
@@ -460,30 +466,6 @@ namespace WebApp.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
-            modelBuilder.Entity("WebApp.Models.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .UseIdentityColumn();
-
-                    b.Property<string>("Address")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers");
-                });
-
             modelBuilder.Entity("WebApp.Models.ExportProduct", b =>
                 {
                     b.Property<int>("Id")
@@ -575,6 +557,22 @@ namespace WebApp.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Slide");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Customer", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasDiscriminator().HasValue("Customer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -716,16 +714,16 @@ namespace WebApp.Migrations
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("WebApp.Models.Customer", b =>
-                {
-                    b.Navigation("Bills");
-                });
-
             modelBuilder.Entity("WebApp.Models.ProductType", b =>
                 {
                     b.Navigation("Categories");
 
                     b.Navigation("Products");
+                });
+
+            modelBuilder.Entity("WebApp.Models.Customer", b =>
+                {
+                    b.Navigation("Bills");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,5 @@
 ﻿@model WebApp.Models.ViewModel
-@{ 
+@{
     string[] Items = null;
 }
 <div id="hot">
@@ -16,7 +16,7 @@
         <div class="product-slider owl-carousel owl-theme owl-loaded owl-drag">
             <!-- /.product-slider-->
             <div class="owl-stage-outer">
-                <div class="owl-stage" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2480px;">
+                <div class="owl-stage products" style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 2480px;">
                     @foreach (var item in Model.Products)
                     {
                         if (item.Img != null)
@@ -30,11 +30,11 @@
                                                 <div class="front"><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id"><img src="~/Img/Pro/@Items[0]" alt="" class="img-fluid image"></a></div>
                                                 <div class="back"><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id"><img src="~/Img/Pro/@Items[1]" alt="" class="img-fluid image"></a></div>
                                             </div>
-                                        </div><a href="detail.html" class="invisible"><img src="~/Img/Pro/@Items[0]" alt="" class="img-fluid image"></a>
+                                        </div><a class="invisible"><img src="~/Img/Pro/@Items[0]" alt="" class="img-fluid image"></a>
                                         <div class="text">
                                             <h3><a asp-controller="Product" asp-action="Detail" asp-route-Id="@item.Id">@item.Name</a></h3>
                                             <p class="price">
-                                                <del></del>Gia: @item.UnitPrice VND
+                                                <del></del>Gia: @item.UnitPrice.ToString("n0") VND
                                             </p>
                                         </div>
                                         @if (item.Level == 1)
@@ -55,7 +55,7 @@
                                     </div>
                                     <!-- /.product-->
                                 </div>
-                            </div>  
+                            </div>
                         }
 
                     }
@@ -71,9 +71,9 @@
         <!-- /#hot-->
         <!-- *** HOT END ***-->
     </div>
-<style>
-    .image{
-        height:250px;
-    }
-</style>
+    <style>
+        .image {
+            height: 250px;
+        }
+    </style>
 </div>

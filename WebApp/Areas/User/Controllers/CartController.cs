@@ -24,6 +24,8 @@ namespace WebApp.Areas.User.Controllers
         {
             ViewModel model = new ViewModel();
             model.Carts = GetCartItems();
+            model.ProductTypes = _context.ProductType.ToList();
+            model.Categories = _context.Categories.ToList();
             return View(model);
         }
         // Lấy cart từ Session (danh sách CartItem)
@@ -71,7 +73,7 @@ namespace WebApp.Areas.User.Controllers
                 cart.Add(new Cart() { Quantity = 1, Product = product });
             }
             SaveCartSession(cart);
-            return RedirectToAction(nameof(Index));
+            return Ok();
         }
         public IActionResult UpdateCart(int productid, int quantity)
         {

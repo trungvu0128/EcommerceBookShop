@@ -51,6 +51,7 @@
 
         $(thisAlert).removeClass('alert-validate');
     }
+    //backend
     
     
 

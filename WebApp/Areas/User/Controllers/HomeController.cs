@@ -22,6 +22,8 @@ namespace WebApp.Areas.User.Controllers
             ViewModel model = new ViewModel();
             model.Slides =  _context.Slide.ToList();
             model.Products =  _context.Products.ToList();
+            model.ProductTypes = _context.ProductType.ToList();
+            model.Categories = _context.Categories.ToList(); 
             return View(model);
         }
     }

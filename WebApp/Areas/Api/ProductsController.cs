@@ -24,13 +24,19 @@ namespace WebApp.Areas.Api
 
         // GET: api/Products
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
+        public async Task<ActionResult<List<Product>>> GetProducts(string CategoryName)
         {
-            // JsonResult result = new JsonResult(_context.Products.ToList());
-            //return result;
-            return await _context.Products.ToListAsync();
+            if (CategoryName == null)
+            {
+                NotFound();
+            }
+            var products = await _context.Products.Include(p => p.Category).Include(p => p.ProductType).Include(p => p.Publishing).Where(p => p.Category.Name.Contains(CategoryName)).ToListAsync();
+            if (products == null)
+            {
+                return NotFound();
+            }
+            return products;
         }
-
         // GET: api/Products/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Product>> GetProduct(int id)
@@ -41,8 +47,8 @@ namespace WebApp.Areas.Api
             {
                 return NotFound();
             }
-
             return product;
+
         }
 
         // PUT: api/Products/5
@@ -102,10 +108,10 @@ namespace WebApp.Areas.Api
 
             return NoContent();
         }
-
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
         }
+        
     }
 }

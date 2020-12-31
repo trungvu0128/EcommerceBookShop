@@ -25,7 +25,7 @@ namespace WebApp.Areas.Admin.Models
         public string Author { get; set; }
 
         [ForeignKey("PubisherId")]
-        [Display(Name = "Danh mục")]
+        [Display(Name = "Nhà xuất bản")]
         public int PublisherId { get; set; }
         [ForeignKey("CategoryId")]
         [Display(Name = "Danh mục sản phẩm")]
