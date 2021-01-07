@@ -66,7 +66,6 @@ namespace WebApp.Areas.User.Controllers
             if(cartitem != null)
             {
                 cartitem.Quantity++;
-
             }
             else
             {
@@ -87,6 +86,18 @@ namespace WebApp.Areas.User.Controllers
             }
             SaveCartSession(cart);
             // Trả về mã thành công (không có nội dung gì - chỉ để Ajax gọi)
+            return Ok();
+        }
+        public IActionResult RemoveItemCart(int? id)
+        {
+            var cart = GetCartItems();
+            var cartitem = cart.Find(p => p.Product.Id == id);
+            if (cartitem != null)
+            {
+                cart.Remove(cartitem);
+            }
+
+            SaveCartSession(cart);
             return Ok();
         }
     }

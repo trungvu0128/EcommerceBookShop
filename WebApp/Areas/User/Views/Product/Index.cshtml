@@ -34,7 +34,7 @@
                                     </p>
                                     <p class="buttons">
                                         <a asp-action="Detail" asp-route-id="@item.Id" class="btn btn-outline-secondary">View detail</a>
-                                        <a asp-controller="Cart" asp-action="AddToCart" asp-route-id="@item.Id" class="btn btn-primary"><i class="fa fa-shopping-cart"></i>Add to cart</a>
+                                        <a href="javascript:" class="btn btn-primary" onclick="addToCart(@item.Id)"><i class="fa fa-shopping-cart"></i>Add to cart</a>
                                     </p>
                                 </div>
                                 @if (item.Level == 1)
@@ -78,3 +78,4 @@
         height: 300px;
     }
 </style>
+

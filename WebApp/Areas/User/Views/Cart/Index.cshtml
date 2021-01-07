@@ -51,7 +51,7 @@
                                         <td class="unitprice">@item.Product.UnitPrice.ToString("n0")</td>
                                         <td>0</td>
                                         <td>@price.ToString("n0")</td>
-                                        <td><a href="#"><i class="fa fa-trash-o"></i></a></td>
+                                        <td><a onclick="removeItemCart(@item.Product.Id)"><i class="fa fa-trash-o"></i></a></td>
                                     </tr>
                                         }
                                     }

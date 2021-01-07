@@ -23,7 +23,7 @@
                 <li>
                     @foreach (var productype in Model.ProductTypes)
                     {
-                        <a class="nav-link">@productype.Name<span class="badge badge-secondary">@Model.Products.Where(p => p.ProductTypeId == productype.Id).Count()</span></a>
+                        <a class="nav-link">@productype.Name<span class="badge badge-secondary"></span></a>
                         <ul class="list-unstyled">
                             @foreach (Category category in Model.Categories)
                             {
