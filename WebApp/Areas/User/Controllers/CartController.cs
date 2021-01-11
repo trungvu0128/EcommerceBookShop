@@ -96,9 +96,11 @@ namespace WebApp.Areas.User.Controllers
             {
                 cart.Remove(cartitem);
             }
-
             SaveCartSession(cart);
-            return Ok();
+            ViewModel model = new ViewModel();
+            model.Carts = GetCartItems();
+
+            return View("Update-List-Cart",model);
         }
     }
 }

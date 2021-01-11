@@ -17,6 +17,9 @@ The above copyright notice and this permission notice shall be included in all c
         th{
             text-align:center;
         }
+        td{
+            text-align:center;
+        }
     </style>
     <div class="wrapper ">
         <div class="sidebar" data-color="purple" data-background-color="white" data-image="../assets/img/sidebar-1.jpg">
@@ -27,7 +30,7 @@ The above copyright notice and this permission notice shall be included in all c
             -->
             <div class="logo">
                 <a href="http://www.creative-tim.com" class="simple-text logo-normal">
-                    Creative Tim
+                    @Context.User.Identity.Name
                 </a>
             </div>
             <div class="sidebar-wrapper">

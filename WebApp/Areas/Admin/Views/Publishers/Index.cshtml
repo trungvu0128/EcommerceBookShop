@@ -4,54 +4,53 @@
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
-<p>
-    <a asp-action="Create" class="btn btn-outline-secondary">Create New</a>
-</p>
-<form class="navbar-form">
-    <div class="input-group no-border">
-        <input type="text" value="" class="form-control" placeholder="Search...">
-        <button type="submit" class="btn btn-white btn-round btn-just-icon">
-            <i class="material-icons">search</i>
-            <div class="ripple-container"></div>
-        </button>
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title ">Sản Phẩm</h4>
+            <p class="card-category">Thương Hiệu Sản Phẩm</p>
+            <a asp-action="Create" class="btn btn-info">Thêm Thương Hiệu Sản Phẩm</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Phone)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Addresss)
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Phone)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Addresss)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
+                                    <a href="javascript:" onclick="deleteAdminProductItem(@item.Id)" class="btn btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Phone)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Addresss)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Phone)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Addresss)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
-        }
-    </tbody>
-</table>
+</div>

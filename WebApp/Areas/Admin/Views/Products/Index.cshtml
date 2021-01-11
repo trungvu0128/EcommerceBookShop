@@ -1,88 +1,110 @@
-﻿@model IEnumerable<WebApp.Areas.Admin.Models.Product>
+﻿@model WebApp.Models.PaginatedList<Product>
 @{
     ViewData["Title"] = "Index";
     Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Index</h2>
-
-<p>
-    <a asp-action="Create" class="btn btn-outline-info">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.UnitPrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Img)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Author)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Publishing)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductType)
-            </th>
-            <th>
-                Action
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model)
-        {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            <td>
-                @{
-                    if (item.Img != null)
-                    {
-                        string[] ListImage = item.Img.Split(",");
-                        for (int i = 0; i < ListImage.Count() - 1; i++)
+<div class="col-md-12">
+    <div class="card">
+        <div class="card-header card-header-primary">
+            <h4 class="card-title ">Sản Phẩm</h4>
+            <p class="card-category">Danh sách sản phẩm</p>
+            <a asp-action="Create" class="btn btn-info">Thêm sản phẩm mới</a>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class=" text-primary">
+                        <tr>
+                            <th>
+                                Name
+                            </th>
+                            <th>
+                                UnitPrice
+                            </th>
+                            <th>
+                                Image
+                            </th>
+                            <th>
+                                Author
+                            </th>
+                            <th>
+                                Publisher
+                            </th>
+                            <th>
+                                Category
+                            </th>
+                            <th>
+                                ProductType
+                            </th>
+                            <th>
+                                Action
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
                         {
-                            <img src="~/Img/Pro/@ListImage[i]" style="width:3rem;margin:0.5rem;display:inline-block" />
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UnitPrice)
+                                </td>
+                                <td>
+                                    @{
+                                        if (item.Img != null)
+                                        {
+                                            string[] ListImage = item.Img.Split(",");
+                                            for (int i = 0; i < ListImage.Count() - 1; i++)
+                                            {
+                                                <img src="~/Img/Pro/@ListImage[i]" style="width:3rem;margin:0.5rem;display:inline-block" />
+                                            }
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Author)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Publishing.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.ProductType.Name)
+                                </td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Edit</a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
+                                    <a href="javascript:" onclick="deleteAdminProductItem(@item.Id)" class="btn btn-outline-danger">Delete</a>
+                                </td>
+                            </tr>
                         }
-                    }
-                }
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Publishing.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ProductType.Name)
-            </td>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    @{
+        var prevDisabled = !Model.PreviousPage ? "Disabled" : "";
+        var nextDisabled = !Model.NextPage ? "Disabled" : "";
+    }
+    @if (Model.PageIndex != 1)
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex -1)"class="btn btn-default @prevDisabled">
+            Previous
+        </a>
+    }
 
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Edit</a>
-                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
-                <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-outline-danger">Delete</a>
-            </td>
-        </tr>
-        }
-    </tbody>
-</table>
-<div class="pager">
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Model.PageIndex +1)" class="btn btn-default @nextDisabled">
+            Next
+        </a>
+    
 
 </div>
+

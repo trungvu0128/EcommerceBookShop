@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WebApp.Areas.Admin.Data;
@@ -19,11 +20,20 @@ namespace WebApp.Areas.Admin.Controllers
         {
             _context = context;
         }
-
-        // GET: Admin/ProductTypes
-        public async Task<IActionResult> Index()
+        public override void OnActionExecuted(ActionExecutedContext context)
         {
-            return View(await _context.ProductType.ToListAsync());
+            ViewBag.ListProductTypes = _context.ProductType.ToList();
+            base.OnActionExecuted(context);
+        }
+        // GET: Admin/ProductTypes
+        public async Task<IActionResult> Index(int ?id)
+        {
+            ProductType productType = null;
+            if(id != null)
+            {
+                productType = await _context.ProductType.FirstOrDefaultAsync(p => p.Id == id);
+            }
+            return View(productType);
         }
 
         // GET: Admin/ProductTypes/Details/5
@@ -45,10 +55,10 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/ProductTypes/Create
-        public IActionResult Create()
-        {
-            return View();
-        }
+        //public IActionResult Create()
+        //{
+        //    return View();
+        //}
 
         // POST: Admin/ProductTypes/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -63,24 +73,24 @@ namespace WebApp.Areas.Admin.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(productType);
+            return View("Index");
         }
 
         // GET: Admin/ProductTypes/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        //public async Task<IActionResult> Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            var productType = await _context.ProductType.FindAsync(id);
-            if (productType == null)
-            {
-                return NotFound();
-            }
-            return View(productType);
-        }
+        //    var productType = await _context.ProductType.FindAsync(id);
+        //    if (productType == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(productType);
+        //}
 
         // POST: Admin/ProductTypes/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -114,7 +124,7 @@ namespace WebApp.Areas.Admin.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(productType);
+            return View("Index");
         }
 
         // GET: Admin/ProductTypes/Delete/5

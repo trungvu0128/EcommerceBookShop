@@ -20,7 +20,6 @@ namespace WebApp.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly DPContext _context;
-
         public ProductsController(DPContext context)
         {
             _context = context;
@@ -41,17 +40,15 @@ namespace WebApp.Areas.Admin.Controllers
             ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");
         }
         // GET: Admin/Products
-        public async Task<IActionResult> Index(string queryStrings = null)
+        public async Task<IActionResult> Index(string queryStrings = null, int pageNumber = 1)
         {
-            //var dPContext = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
-            //return View(await dPContext.ToListAsync());
-            var queryResult = await _context.Products.Include(p => p.Publishing).Include(p => p.Category).ToListAsync();
+            var queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
             if (queryStrings != null)
             {
-                queryResult = await _context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings)).ToListAsync();
+                queryResult = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Product, Category>)_context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings));
             }
             ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
-            return View(queryResult);
+            return View(await PaginatedList<Product>.CreateAsync(queryResult, pageNumber, 5));
         }
 
         // GET: Admin/Products/Details/5
@@ -75,7 +72,7 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Create
-        public IActionResult Create()
+        public IActionResult Create()  
         {
             _construct();
             return View();

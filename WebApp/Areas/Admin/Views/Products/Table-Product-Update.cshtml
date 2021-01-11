@@ -1,0 +1,79 @@
+﻿@model WebApp.Models.PaginatedList<Product>
+@{
+    ViewData["Title"] = "Index";
+}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class=" text-primary">
+                <tr>
+                    <th>
+                        Name
+                    </th>
+                    <th>
+                        UnitPrice
+                    </th>
+                    <th>
+                        Image
+                    </th>
+                    <th>
+                        Author
+                    </th>
+                    <th>
+                        Publisher
+                    </th>
+                    <th>
+                        Category
+                    </th>
+                    <th>
+                        ProductType
+                    </th>
+                    <th>
+                        Action
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UnitPrice)
+                        </td>
+                        <td>
+                            @{
+                                if (item.Img != null)
+                                {
+                                    string[] ListImage = item.Img.Split(",");
+                                    for (int i = 0; i < ListImage.Count() - 1; i++)
+                                    {
+                                        <img src="~/Img/Pro/@ListImage[i]" style="width:3rem;margin:0.5rem;display:inline-block" />
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Author)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Publishing.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ProductType.Name)
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-outline-info">Edit</a>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-outline-primary">Details</a>
+                            <a href="javascript:" onclick="deleteAdminProductItem(@item.Id)" class="btn btn-outline-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
