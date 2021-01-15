@@ -33,7 +33,7 @@ namespace WebApp.Areas.Admin.Models
 
         [ForeignKey("ProductTypeId")]
         [Display(Name = "Loại sản phẩm")]
-        public int ProductTypeId { get; set; }
+        public int? ProductTypeId { get; set; }
         [Display(Name = "Mô tả")]
         public string  Description { get; set; }
         [Display(Name = "Trạng thái sản phẩm")]

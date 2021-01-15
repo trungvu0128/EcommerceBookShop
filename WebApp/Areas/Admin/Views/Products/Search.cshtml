@@ -1,0 +1,39 @@
+﻿<form  method="post" enctype="multipart/form-data">
+    <div class="form-row">
+        <div class="col-3">
+            <label>Loại sản phẩm</label>
+            <select class="form-control" id="producttype" onchange="getCategoryToType()">
+                @foreach (var item in ViewBag.ListProductTypes)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label>Danh mục sản phẩm</label>
+            <select class="form-control category" name="category">
+                @foreach (var item in ViewBag.ListCategory)
+                {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+        </div>
+        <div class="col">
+            <label>Nhà xuất bản</label>
+            <select class="form-control publisher" name="publisher">
+                @foreach (var item in ViewBag.ListPublisher)
+                {
+                    <option value="@item.Id">@item.Name</option>    
+                }
+            </select>
+        </div>
+        <div class="col-5">
+            <label>Tên sản phẩm</label>
+            <input type="text" class="form-control product" name="product"/>
+        </div>
+        <div class="col">
+            <button class="btn btn-primary" onclick="search()">Tìm kiếm</button>
+        </div>
+    </div>
+</form>
+<button class="btn btn-primary" onclick="search()">Tìm kiếm</button>

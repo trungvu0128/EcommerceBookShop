@@ -1,31 +1,32 @@
 ﻿@model WebApp.Models.PaginatedList<Product>
 @{
     ViewData["Title"] = "Index";
+    Layout = null;
 }
     <div class="table-responsive">
         <table class="table">
             <thead class=" text-primary">
                 <tr>
                     <th>
-                        Name
+                        Tên sản phẩm
                     </th>
                     <th>
-                        UnitPrice
+                        Đơn giá
                     </th>
                     <th>
-                        Image
+                        Hình ảnh
                     </th>
                     <th>
-                        Author
+                        Tác giả
                     </th>
                     <th>
-                        Publisher
+                        Nhà xuất bản
                     </th>
                     <th>
-                        Category
+                        DAnh mục sản phẩm
                     </th>
                     <th>
-                        ProductType
+                        Loại sản phẩm
                     </th>
                     <th>
                         Action

@@ -11,30 +11,31 @@
             <a asp-action="Create" class="btn btn-info">Thêm sản phẩm mới</a>
         </div>
         <div class="card-body">
+            <partial name="Search" />
             <div class="table-responsive">
                 <table class="table">
                     <thead class=" text-primary">
                         <tr>
                             <th>
-                                Name
+                                Tên sản phẩm
                             </th>
                             <th>
-                                UnitPrice
+                                Đơn giá
                             </th>
                             <th>
-                                Image
+                                Hình ảnh
                             </th>
                             <th>
-                                Author
+                                Tác giả
                             </th>
                             <th>
-                                Publisher
+                                Nhà xuất bản
                             </th>
                             <th>
-                                Category
+                                Danh mục sản phẩm
                             </th>
                             <th>
-                                ProductType
+                                Loại sản phẩm
                             </th>
                             <th>
                                 Action
@@ -104,7 +105,5 @@
            asp-route-pageNumber="@(Model.PageIndex +1)" class="btn btn-default @nextDisabled">
             Next
         </a>
-    
-
 </div>
 

@@ -369,7 +369,7 @@ namespace WebApp.Migrations
                     Author = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PublisherId = table.Column<int>(type: "int", nullable: false),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
-                    ProductTypeId = table.Column<int>(type: "int", nullable: false),
+                    ProductTypeId = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Level = table.Column<int>(type: "int", nullable: false)
                 },
@@ -389,7 +389,7 @@ namespace WebApp.Migrations
                         principalSchema: "Identity",
                         principalTable: "ProductType",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Products_Publishers_PublisherId",
                         column: x => x.PublisherId,

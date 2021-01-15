@@ -18,6 +18,7 @@ namespace WebApp.Models
         [Display(Name = "Số điện thoại")]
         public string  Phone { get; set; }
         public string  Email { get; set; }
+        public string Password { get; set; }
         public List<Bill> Bills { get; set; }
        // public string  MyProperty { get; set; }
     }

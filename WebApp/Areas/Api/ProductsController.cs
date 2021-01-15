@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using WebApp.Areas.Admin.Data;
 using WebApp.Areas.Admin.Models;
+using WebApp.Models;
 
 namespace WebApp.Areas.Api
 {
@@ -23,14 +24,10 @@ namespace WebApp.Areas.Api
         }
 
         // GET: api/Products
-        [HttpGet]
-        public async Task<ActionResult<List<Product>>> GetProducts(string CategoryName)
+        [HttpGet("{id}/Category")]
+        public async Task<ActionResult<List<Product>>> GetProducts(string id)
         {
-            if (CategoryName == null)
-            {
-                NotFound();
-            }
-            var products = await _context.Products.Include(p => p.Category).Include(p => p.ProductType).Include(p => p.Publishing).Where(p => p.Category.Name.Contains(CategoryName)).ToListAsync();
+            var products = await _context.Products.Where(p => p.CategoryId.ToString().Contains(id)).ToListAsync();
             if (products == null)
             {
                 return NotFound();
@@ -108,6 +105,7 @@ namespace WebApp.Areas.Api
 
             return NoContent();
         }
+
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);

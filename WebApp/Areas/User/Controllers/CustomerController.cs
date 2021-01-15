@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WebApp.Areas.User.Controllers
 {
-    public class AuthController : Controller
+    public class CustomerController : Controller
     {
         public IActionResult Index()
         {

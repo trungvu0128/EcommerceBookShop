@@ -30,10 +30,9 @@
                                 if (category.ProductTypeId == productype.Id)
                                 {
 
-                                    <li class="nav-item"><a class="nav-link category">@category.Name</a>
+                                    <li class="nav-item">
+                                        <a class="nav-link"asp-controller="Product" asp-action="Index" asp-route-id="@category.Id">@category.Name</a>
                                     </li>
-
-
                                 }
 
                             }
@@ -48,3 +47,11 @@
     </div>
     <!-- *** MENUS AND FILTERS END ***-->
 </div>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        
+      
+    </script>
+}
+

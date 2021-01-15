@@ -10,7 +10,7 @@ using WebApp.Areas.Admin.Data;
 namespace WebApp.Migrations
 {
     [DbContext(typeof(DPContext))]
-    [Migration("20201228024502_IntialCreate")]
+    [Migration("20210112045125_IntialCreate")]
     partial class IntialCreate
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -320,7 +320,7 @@ namespace WebApp.Migrations
                     b.Property<int>("Origin")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductTypeId")
+                    b.Property<int?>("ProductTypeId")
                         .HasColumnType("int");
 
                     b.Property<int>("PublisherId")
@@ -673,9 +673,7 @@ namespace WebApp.Migrations
 
                     b.HasOne("WebApp.Models.ProductType", "ProductType")
                         .WithMany("Products")
-                        .HasForeignKey("ProductTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ProductTypeId");
 
                     b.HasOne("WebApp.Areas.Admin.Models.Publisher", "Publishing")
                         .WithMany("Products")

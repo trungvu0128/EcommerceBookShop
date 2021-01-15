@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using PagedList;
 using WebApp.Areas.Admin.Data;
 using WebApp.Areas.Admin.Models;
 using WebApp.Models;
@@ -20,6 +20,13 @@ namespace WebApp.Areas.Admin.Controllers
     public class ProductsController : Controller
     {
         private readonly DPContext _context;
+        public override void OnActionExecuted(ActionExecutedContext context)
+        {
+            ViewBag.ListProductTypes = _context.ProductType.ToList();
+            ViewBag.ListCategory = _context.Categories.ToList();
+            ViewBag.ListPublisher = _context.Publishers.ToList();
+            base.OnActionExecuted(context);
+        }
         public ProductsController(DPContext context)
         {
             _context = context;
@@ -38,17 +45,30 @@ namespace WebApp.Areas.Admin.Controllers
             ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Name");
             ViewData["ProductTypeId"] = new SelectList(_context.ProductType, "Id", "Name");
             ViewData["Level"] = new SelectList(ListLevel, "Id", "Name");
+            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
         }
         // GET: Admin/Products
         public async Task<IActionResult> Index(string queryStrings = null, int pageNumber = 1)
         {
-            var queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category);
+            var queryResult = _context.Products.Include(p => p.Publishing).Include(p => p.Category).Include(p => p.ProductType);
             if (queryStrings != null)
             {
-                queryResult = (Microsoft.EntityFrameworkCore.Query.IIncludableQueryable<Product, Category>)_context.Products.Include(p => p.Publishing).Include(p => p.Category).Where(p => p.Name.Contains(queryStrings));
+                    
             }
-            ViewData["PublisherId"] = new SelectList(_context.Publishers, "Id", "Name");
             return View(await PaginatedList<Product>.CreateAsync(queryResult, pageNumber, 5));
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Search(int? category, int? publisher, string productname)
+        {
+            var products = from product in _context.Products
+                           where (product.CategoryId == category || product.PublisherId == publisher || product.Name.Contains(productname))
+                           select product;
+            if(products == null)
+            {
+                return NotFound();
+            }
+            return View("Table-Product-Update", await products.ToListAsync());
         }
 
         // GET: Admin/Products/Details/5
@@ -140,8 +160,7 @@ namespace WebApp.Areas.Admin.Controllers
         // POST: Admin/Products/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpGet]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,UnitPrice,Author,PublisherId,CategoryId,ProductTypeId,Description,Img,Origin")] Product product,ICollection<IFormFile> Files)
         {
             if (id != product.Id)
@@ -188,36 +207,30 @@ namespace WebApp.Areas.Admin.Controllers
         }
 
         // GET: Admin/Products/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int id, int pageNumber = 1)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product = await _context.Products
-                .Include(p => p.Publishing)
-                .Include(p => p.Category)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var product = await _context.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-
-            return View(product);
-        }
-
-        // POST: Admin/Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var product = await _context.Products.FindAsync(id);
             _context.Products.Remove(product);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return View("Table-Product-Update", await PaginatedList<Product>.CreateAsync(_context.Products.Include(p => p.Publishing).Include(p => p.Category), pageNumber, 5));
         }
 
+        [HttpGet]
+        public async Task<ActionResult> Search(int idcat, int idpub, string name,int pageNumber = 5)
+        {
+            var products = from product in _context.Products
+                           where (product.CategoryId == idcat || product.PublisherId == idpub || product.Name == name)
+                           select product;
+            if(products == null)
+            {
+                return NoContent();
+            }
+            return View("Table-Product-Update", await PaginatedList<Product>.CreateAsync(products, pageNumber, 5));
+        }
         private bool ProductExists(int id)
         {
             return _context.Products.Any(e => e.Id == id);
